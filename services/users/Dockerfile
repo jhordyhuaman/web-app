@@ -1,28 +1,24 @@
 # image base
-FROM python:3.8.5-alpine
-
-# nuevo
-# instalando dependencias
-RUN apk update && \
-    apk add --virtual build-deps gcc python3-dev musl-dev && \
-    apk add postgresql-dev && \
-    apk add netcat-openbsd
-
-# estableciendo direcetorio de trabajo
+FROM python:3.7.2-slim
+ 
+# instalando netcat
+RUN apt-get update && \
+    apt-get -y install netcat && \
+    apt-get clean
+ 
+# estableciendo directorio de trabajo
 WORKDIR /usr/src/app
-
-# agregando e instalando requirements
+ 
+# copiando e instalando requirements
 COPY ./requirements.txt /usr/src/app/requirements.txt
 RUN pip install -r requirements.txt
-
-# nuevo
-# agregando entrypoint.sh
+ 
+# copiando entrypoint.sh
 COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 RUN chmod +x /usr/src/app/entrypoint.sh
-
-# agregando app
+ 
+# copiando app
 COPY . /usr/src/app
-
-# nuevo
-# ejecutar server
+ 
+# ejecutando server
 CMD ["/usr/src/app/entrypoint.sh"]
