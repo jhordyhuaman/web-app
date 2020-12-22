@@ -8,8 +8,8 @@ import About from './components/About';
 import NavBar from './components/NavBar';
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       users: [],
       username: '',
@@ -21,9 +21,12 @@ class App extends Component {
         email: '',
         password: ''
       },
+      
     };
     this.addUser = this.addUser.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleUserFormSubmit = this.handleUserFormSubmit.bind(this);
+    this.handleFormChange=this.handleFormChange.bind(this);
   };
   componentDidMount() {
     this.getUsers();
@@ -50,7 +53,34 @@ class App extends Component {
     const obj = {};
     obj[event.target.name] = event.target.value;
     this.setState(obj);
+    console.log(this.state.formData);
   };
+
+  handleUserFormSubmit(event) {
+    event.preventDefault();
+    const formType = window.location.href.split('/').reverse()[0];
+    let data = {
+      email: this.state.formData.email,
+      password: this.state.formData.password,
+    };
+    if (formType === 'register') {
+      data.username = this.state.formData.username;
+    }
+    const url = `${process.env.REACT_APP_USERS_SERVICE_URL}/auth/${formType}`
+    axios.post(url, data)
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => { console.log(err); });
+  };
+
+  handleFormChange(event) {
+    const obj = this.state.formData;
+    obj[event.target.name] = event.target.value;
+    this.setState(obj);
+    console.log(this.state.formData);
+  };
+
   render() {
     return (
       <div>
@@ -61,18 +91,20 @@ class App extends Component {
               <div className="column is-half">
                 <br/>
                 <Switch>
-                <Route exact path='/register' render={() => (
-                      <Form
-                        formType={'Register'}
-                        formData={this.state.formData}
-                      />
-                    )} />
-                    <Route exact path='/login' render={() => (
-                      <Form
-                        formType={'Login'}
-                        formData={this.state.formData}
-                      />
-                    )} />
+          <Route exact path='/register' render={() => (
+            <Form
+                  formType={'Register'}
+                  formData={this.state.formData}
+                  handleUserFormSubmit={this.handleUserFormSubmit}  // nuevo
+                />
+              )} />
+              <Route exact path='/login' render={() => (
+                <Form
+                  formType={'Login'}
+                  formData={this.state.formData}
+                  handleUserFormSubmit={this.handleUserFormSubmit}  // nuevo
+                />
+              )} />
                   <Route exact path='/' render={() => (
                     <div>
                       <h1 className="title is-1">All Users</h1>

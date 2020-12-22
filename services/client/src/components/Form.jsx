@@ -19,7 +19,6 @@ const Form = (props) => {
               className="input is-medium"
               type="text"
               placeholder="Enter a username"
-              required
               value={props.formData.username}
               onChange={props.handleFormChange}
             />
@@ -31,8 +30,7 @@ const Form = (props) => {
             className="input is-medium"
             type="email"
             placeholder="Enter an email address"
-            required
-            value={props.formData.email}
+            defaultValue={props.formData.email}
             onChange={props.handleFormChange}
           />
         </div>
@@ -42,15 +40,14 @@ const Form = (props) => {
             className="input is-medium"
             type="password"
             placeholder="Enter a password"
-            required
-            value={props.formData.password}
+            defaultValue={props.formData.password}
             onChange={props.handleFormChange}
           />
         </div>
         <input
           type="submit"
           className="button is-primary is-medium is-fullwidth"
-          value="Submit"
+          defaultValue="Submit"
         />
       </form>
     </div>
