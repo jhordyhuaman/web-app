@@ -96,6 +96,7 @@ class App extends Component {
                   formType={'Register'}
                   formData={this.state.formData}
                   handleUserFormSubmit={this.handleUserFormSubmit}  // nuevo
+                  handleFormChange={this.handleFormChange}
                 />
               )} />
               <Route exact path='/login' render={() => (
@@ -103,6 +104,7 @@ class App extends Component {
                   formType={'Login'}
                   formData={this.state.formData}
                   handleUserFormSubmit={this.handleUserFormSubmit}  // nuevo
+                  handleFormChange={this.handleFormChange}
                 />
               )} />
                   <Route exact path='/' render={() => (
